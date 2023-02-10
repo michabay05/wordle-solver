@@ -7,8 +7,10 @@ use std::io::{self, Write};
 use word::Word;
 use wordle::Wordle;
 
-pub const WORD_LIST_FILE: &str = "words.txt";
+// Word list file path constant
+pub const WORD_LIST_FILE: &str = "./words.txt";
 
+// Util function that gets input from user
 fn get_input(prompt_str: &str) -> Result<String, io::Error> {
     // Buffer that stores the user input
     let mut buffer = String::new();
@@ -20,20 +22,24 @@ fn get_input(prompt_str: &str) -> Result<String, io::Error> {
     Ok(buffer)
 }
 
+// Parses the input from user and returns a 'Word' instance
 fn parse_wordle_input(str: &str) -> Option<Word> {
     // Regex expression
     const INPUT_REGEX: &str = r#"^([a-z]{5})\s([xyg]{5})$"#;
     // Regex instance
     let regex = Regex::new(INPUT_REGEX).unwrap();
+    // If user input doesn't match input regex, return None
     if !regex.is_match(str) {
         return None;
     }
-    let mut split_parts = str.split_ascii_whitespace();
-    let word = Word::new(split_parts.next().unwrap(), split_parts.next().unwrap());
-    Some(word)
+    // If user input matches the input regex, split the input by whitespace
+    let mut split_parts = str.trim().split_ascii_whitespace();
+    // Create and return a 'Word' instance from user input
+    Some(Word::new(split_parts.next().unwrap(), split_parts.next().unwrap()))
 }
 
-fn start_game(wordle: &mut Wordle) {
+fn start_program(wordle: &mut Wordle) {
+    // Main program loop
     loop {
         // Get input from user
         let user_input = get_input("<< ");
@@ -59,6 +65,6 @@ fn start_game(wordle: &mut Wordle) {
 fn main() {
     let mut wordle = Wordle::new();
 
-    // start_game(&mut wordle);
+    // start_program(&mut wordle);
     wordle.test();
 }
