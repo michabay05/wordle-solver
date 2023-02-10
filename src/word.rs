@@ -51,9 +51,7 @@ impl Word {
 
     pub fn count_state_for_char(&self, ltr: char, state: WordState) -> i8 {
         // Find the given character in the word array
-        let char_index = self.word.iter().position(|el| *el == ltr);
-        // If it doesn't exists, return 0
-        if char_index.is_none() {
+        if !self.word.iter().any(|c| *c == ltr) {
             return 0;
         }
 
